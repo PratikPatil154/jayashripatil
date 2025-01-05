@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Materials</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        header {
+            background: #333;
+            color: #fff;
+            padding: 1rem 0;
+            text-align: center;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background: #555;
+            padding: 0.5rem;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 1rem;
+            padding: 0.5rem 1rem;
+        }
+        nav a:hover {
+            background: #333;
+        }
+        .container {
+            padding: 2rem;
+        }
+        footer {
+            background: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1rem 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Upload Study Materials</h1>
+    </header>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="blog.html">Blog</a>
+        <a href="upload.html">Upload</a>
+        <a href="contact.html">Contact</a>
+    </nav>
+    <div class="container">
+        <section id="upload">
+            <h2>Upload Your Materials</h2>
+            <form id="upload-form">
+                <label for="title">Title:</label>
+                <input type="text" id="title" name="title" required><br><br>
+                <label for="content">Content:</label><br>
+                <textarea id="content" name="content" rows="4" required></textarea><br><br>
+                <label for="file">Attachment:</label>
+                <input type="file" id="file" name="file"><br><br>
+                <button type="submit">Upload</button>
+            </form>
+        </section>
+    </div>
+    <footer>
+        <p>&copy; 2025 Study Materials Portal</p>
+    </footer>
+    <script>
+        const form = document.getElementById('upload-form');
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const title = document.getElementById('title').value;
+            const content = document.getElementById('content').value;
+            const file = document.getElementById('file').files[0];
+
+            const data = { title, content };
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function () {
+                    data.file = reader.result;
+                    saveData(data);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                saveData(data);
+            }
+        });
+
+        function saveData(data) {
+            const uploads = JSON.parse(localStorage.getItem('uploads')) || [];
+            uploads.push(data);
+            localStorage.setItem('uploads', JSON.stringify(uploads));
+            alert('Upload successful!');
+            form.reset();
+        }
+    </script>
+</body>
+</html>
